@@ -1,0 +1,16 @@
+{
+  "required": [
+    "username",
+    "password"
+  ],
+  "additionalProperties": true,
+  "properties": {
+    "username": {
+      "type": "string"
+    },
+    "password": {
+      "type": "string",
+      "minLength": 5
+    }
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "name": "classroom-manager-backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "dependencies": {
+    "ajv": "^8.6.3",
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "express-async-errors": "^3.1.1",
+    "jsonwebtoken": "^8.5.1",
+    "knex": "^0.95.11",
+    "morgan": "^1.10.0",
+    "mysql2": "^2.3.2",
+    "randomstring": "^1.2.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/huuduynvc/classroom-manager-backend.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/huuduynvc/classroom-manager-backend/issues"
+  },
+  "homepage": "https://github.com/huuduynvc/classroom-manager-backend#readme"
+}
