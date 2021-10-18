@@ -12,6 +12,7 @@ router.get('/', async function (req, res) {
 })
 
 router.post('/', validate(classSchema), async function (req, res) {
+  classObj = req.body;
   const listIds = await classModel.add(req.body);
   classObj.id = listIds[0];
   res.status(201).json(classObj);
