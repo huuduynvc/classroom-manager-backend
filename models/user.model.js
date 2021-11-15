@@ -25,6 +25,15 @@ module.exports = {
     return users[0];
   },
 
+  async findByEmail(email) {
+    const users = await db('user').where('email', email);
+    if (users.length === 0) {
+      return null;
+    }
+
+    return users[0];
+  },
+
   async add(user) {
     const ids = await db('user').insert(user);
     return ids[0];

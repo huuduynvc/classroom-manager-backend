@@ -6,7 +6,8 @@
   "additionalProperties": true,
   "properties": {
     "username": {
-      "type": "string"
+      "type": "string",
+      "minLength": 5
     },
     "password": {
       "type": "string",

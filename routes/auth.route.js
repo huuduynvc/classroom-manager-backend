@@ -19,6 +19,13 @@ router.post('/', validate(userSchema), async function (req, res) {
     });
   }
 
+  // const email = await userModel.findByEmail(req.body.email);
+  // if (email === null) {
+  //   return res.json({
+  //     authenticated: false
+  //   });
+  // }
+
   if (!bcrypt.compareSync(req.body.password, user.password)) {
     return res.json({
       authenticated: false

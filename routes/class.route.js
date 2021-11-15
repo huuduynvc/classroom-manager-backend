@@ -11,6 +11,12 @@ router.get('/', async function (req, res) {
   res.json(list);
 })
 
+router.get('/:id', async function (req, res) {
+  const id = req.params.id || 0;
+  const list = await classModel.findByTeacherId(id);
+  res.json(list);
+})
+
 router.post('/', validate(classSchema), async function (req, res) {
   classObj = req.body;
   const listIds = await classModel.add(req.body);

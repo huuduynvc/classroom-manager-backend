@@ -8,6 +8,14 @@ module.exports = {
   // findByUserId(userId) {
   //   return db('tasks').where('user_id', userId);
   // },
+  async findByTeacherId(id) {
+    const classObj = await db('class').where('creator', id);
+    if (classObj.length === 0) {
+      return null;
+    }
+    
+    return classObj;
+  },
 
   async findById(id) {
     const classObj = await db('class').where('id', id);
@@ -15,7 +23,7 @@ module.exports = {
       return null;
     }
 
-    return task[0];
+    return classObj[0];
   },
 
   add(classObj) {
