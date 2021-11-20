@@ -5,16 +5,8 @@ module.exports = {
     return db('class');
   },
 
-  // findByUserId(userId) {
-  //   return db('tasks').where('user_id', userId);
-  // },
-  async findByTeacherId(id) {
-    const classObj = await db('class').where('creator', id);
-    if (classObj.length === 0) {
-      return null;
-    }
-    
-    return classObj;
+  async findByUserId(id) {
+    return await db('class').leftJoin('membership','class.id','membership.id_class').where('membership.id_user',id);
   },
 
   async findById(id) {
@@ -24,6 +16,18 @@ module.exports = {
     }
 
     return classObj[0];
+  },
+
+  async membersOfClass(id){
+    return await db('membership').where('id_class',id).leftJoin('user','membership.id_user','user.id');
+  },
+
+  async teachersOfClass(id){
+    return await db('membership').where({'id_class':id,'role_member': 1}).leftJoin('user','membership.id_user','user.id');
+  },
+
+  async studentsOfClass(id){
+    return await db('membership').where({'id_class':id,'role_member': 2}).leftJoin('user','membership.id_user','user.id');
   },
 
   add(classObj) {

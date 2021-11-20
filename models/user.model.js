@@ -39,6 +39,10 @@ module.exports = {
     return ids[0];
   },
 
+  patch(id, userWithoutId) {
+    return db('user').update(userWithoutId).where('id', id);
+  },
+
   updateRefreshToken(id, refreshToken) {
     return db('user').where('id', id).update('rfToken', refreshToken);
   },
