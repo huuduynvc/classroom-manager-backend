@@ -43,6 +43,12 @@ module.exports = {
     return db('user').update(userWithoutId).where('id', id);
   },
 
+  del(id) {
+    return db('user')
+      .where('id', id)
+      .del();
+  },
+
   updateRefreshToken(id, refreshToken) {
     return db('user').where('id', id).update('rfToken', refreshToken);
   },

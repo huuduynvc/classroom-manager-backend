@@ -1,10 +1,10 @@
 {
   "required": [
-    "name"
+    "classname"
   ],
   "additionalProperties": false,
   "properties": {
-    "name": {
+    "classname": {
       "type": "string"
     }
   }

@@ -25,7 +25,7 @@ router.get('/user/:id', async function (req, res) {
 
 router.get('/:id/members', async function (req, res) {
   const id = req.params.id || 0;
-  const list = await classModel.allMembersOfClass(id);
+  const list = await classModel.membersOfClass(id);
   res.json(list);
 })
 
