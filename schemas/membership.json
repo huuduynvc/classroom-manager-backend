@@ -1,0 +1,19 @@
+{
+  "required": [
+    "id_user",
+    "id_class",
+    "role_member"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "id_user": {
+      "type": "integer"
+    },
+    "id_class": {
+      "type": "integer"
+    },
+    "role_member": {
+      "type": "integer"
+    }
+  }
+}
