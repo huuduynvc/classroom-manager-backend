@@ -31,9 +31,16 @@ router.post('/', validate(userSchema), async function (req, res) {
       authenticated: false
     });
   }
-
+  
   const accessToken = jwt.sign({
-    userId: user.id
+    id: user.id,
+    username: user.username,
+    fullname: user.fullname,
+    email: user.email,
+    avatar: user.avatar,
+    creation_time: user.creation_time,
+    expired_time: 10*60,
+    studentID: user.studentid
   }, 'SECRET_KEY', {
     expiresIn: 10 * 60 // seconds
   });
