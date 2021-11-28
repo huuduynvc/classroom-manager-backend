@@ -1,0 +1,20 @@
+{
+  "required": [
+    "name",
+    "point",
+    "stt"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "name": {
+      "type": "string",
+      "minLength": 5
+    },
+    "point": {
+      "type": "integer"
+    },
+    "stt": {
+      "type": "integer"
+    }
+  }
+}
