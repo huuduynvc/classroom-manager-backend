@@ -5,6 +5,15 @@ module.exports = {
     return db('grade');
   },
 
+  async findById(id) {
+    const gradeObj = await db('grade').where('id', id);
+    if (gradeObj.length === 0) {
+      return null;
+    }
+
+    return gradeObj[0];
+  },
+
   async findByClassId(id) {
     return await db('grade').where('id_class',id);
   },
