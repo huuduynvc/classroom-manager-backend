@@ -18,6 +18,15 @@ module.exports = {
     return classObj[0];
   },
 
+  async findByCode(code) {
+    const classObj = await db('class').where('code', code);
+    if (classObj.length === 0) {
+      return null;
+    }
+
+    return classObj[0];
+  },
+
   async membersOfClass(id){
     return await db('membership').where('id_class',id).leftJoin('user','membership.id_user','user.id');
   },

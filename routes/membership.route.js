@@ -58,6 +58,26 @@ router.post('/class/:id_class/invite/:email/role/:role_member', async function (
   }
 })
 
+router.post('/class/:id_class/invite/:email/role/:role_member', async function (req, res) {
+  memberObj = req.body;
+  const id_class = req.params.id_class;
+  const role_member = req.params.role_member;
+  const email = req.params.email;
+  const user = userModel.findByEmail(email);
+  if(user !== null){
+    const memberObj = {
+      id_class: id_class,
+      id_user: user.id,
+      role_member: role_member
+    }
+    const listIds = await membershipModel.add(memberObj);
+    memberObj.id = listIds[0];
+    res.status(201).json(memberObj);
+  }else{
+    res.status(400);
+  }
+})
+
 router.patch('/:id', async function (req, res) {
   const id = req.params.id || 0;
   const memberObj = req.body;

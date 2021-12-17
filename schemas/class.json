@@ -2,7 +2,7 @@
   "required": [
     "classname"
   ],
-  "additionalProperties": false,
+  "additionalProperties": true,
   "properties": {
     "classname": {
       "type": "string",
