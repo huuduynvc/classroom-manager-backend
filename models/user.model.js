@@ -25,6 +25,15 @@ module.exports = {
     return users[0];
   },
 
+  async findByStudentId(studentid) {
+    const users = await db('user').where('studentid', studentid);
+    if (users.length === 0) {
+      return null;
+    }
+
+    return users[0];
+  },
+
   async findByEmail(email) {
     const users = await db('user').where('email', email);
     if (users.length === 0) {

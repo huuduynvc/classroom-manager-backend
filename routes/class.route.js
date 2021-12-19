@@ -2,10 +2,16 @@ const express = require('express');
 const crypto = require("crypto");
 const jwt = require('jsonwebtoken');
 
+const multer = require('multer');
+const path = require('path');
+const fs = require("fs");
+var XLSX = require('xlsx')
+
 const classModel = require('../models/class.model');
 const validate = require('../middlewares/validate.mdw');
 const classSchema = require('../schemas/class.json');
 const membershipModel = require('../models/membership.model');
+const userModel = require('../models/user.model');
 
 const router = express.Router();
 
@@ -133,11 +139,86 @@ router.post('/:id/invite', async function (req, res) {
       res.status(201).json(memberObj);
     }
 
-    res.return(202);
+    res.status(202);
     
   }else{
     res.status(400);
   }
 })
+
+router.post('/:id/upload', async(req, res) => {
+    const id = req.params.id || 0;
+    // console.log(req.body);
+    // var workbook = XLSX.readFile(req.body.input_file);
+    // var sheet_name_list = workbook.SheetNames;
+    // var xlData = XLSX.utils.sheet_to_json(workbook.Sheets[sheet_name_list[0]]);
+    // console.log(xlData);
+    var filename;
+
+    const storage = multer.diskStorage({
+        destination: function(req, file, cb) {
+            cb(null, `./public/templates`);
+        },
+        filename: function(req, file, cb) {
+            cb(null, id.toString() + path.extname(file.originalname))
+            filename = id.toString() + path.extname(file.originalname);
+        }
+    });
+
+    const upload = multer({ storage });
+    upload.single('input_file')(req, res, async function(err) {
+      console.log(req);
+      console.log(req.file);
+
+      try{var workbook = XLSX.readFile(req.file.path);
+        var sheet_name_list = workbook.SheetNames;
+        var xlData = XLSX.utils.sheet_to_json(workbook.Sheets[sheet_name_list[0]]);
+        //console.log(xlData);
+  
+        var currentdate = new Date();
+        var datetime = "" + currentdate.getFullYear() + "-" + (currentdate.getMonth() + 1) + "-" + currentdate.getDate() + " " + currentdate.getHours() + ":" + currentdate.getMinutes() + ":" + currentdate.getSeconds();
+  
+        for(let i=0;i<xlData.length;i++){
+          const user = await userModel.findByStudentId(xlData[i].studentid);
+          if(user !== null){
+            console.log(user.id);
+            const memberObj = await membershipModel.findByUserIdAndClassId(user.id,id);
+  
+            if(memberObj.length === 0){
+              await membershipModel.add({
+                id_user: user.id,
+                id_class: id,
+                role_member: 2,
+                creation_time: new Date(datetime),
+                modification_time: new Date(datetime),
+              });
+            }
+          }
+        }
+  
+          
+
+      }catch(err){
+        console.log(err);
+      }
+        
+
+        // await classModel.patch(id,{
+        //     creation_time: new Date(datetime),
+        //     modification_time: new Date(datetime),
+        //     template: filename,
+        // });
+
+        if (err) {
+          console.log(err);
+          res.status(401).json(err);
+        }else{
+          res.status(200).json("Upload file successfully.");
+        }
+    });
+})
+
+
+
 
 module.exports = router;

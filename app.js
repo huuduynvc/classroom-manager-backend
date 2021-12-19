@@ -11,12 +11,21 @@ app.use(morgan('dev'));
 app.use(cors());
 app.use(express.json());
 
+app.use(express.urlencoded({ extended: true })); 
+
+var bodyParser = require('body-parser');
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+
+app.get('/', function(req, res) {
+  res.json({ message: 'Welcome to Classroom manager api' });   
+});
 app.use('/api/auth', require('./routes/auth.route'));
 app.use('/api/user', require('./routes/user.route'));
 // app.use('/api/class', auth, require('./routes/class.route'));
 app.use('/api/class', require('./routes/class.route'));
-app.use('/api/grade',auth, require('./routes/grade.route'));
-app.use('/api/membership',auth, require('./routes/membership.route'));
+app.use('/api/grade', require('./routes/grade.route'));
+app.use('/api/membership', require('./routes/membership.route'));
 
 
 app.use(function (req, res, next) {
