@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken');
 const randomstring = require('randomstring');
 
 const userModel = require('../models/user.model');
+const adminModel = require('../models/admin.model');
 const validate = require('../middlewares/validate.mdw');
 
 const userSchema = require('../schemas/user.json');
@@ -31,6 +32,11 @@ router.post('/', validate(userSchema), async function (req, res) {
       authenticated: false
     });
   }
+
+  let role_user = 0;
+  if(await adminModel.findByUserId(user.id) !== null){
+    role_user = 1;
+  }
   
   const accessToken = jwt.sign({
     id: user.id,
@@ -40,10 +46,12 @@ router.post('/', validate(userSchema), async function (req, res) {
     avatar: user.avatar,
     creation_time: user.creation_time,
     expired_time: 10*60,
-    studentID: user.studentid
+    studentid: user.studentid,
+    role_user: role_user
   }, 'SECRET_KEY', {
     expiresIn: 10 * 60 // seconds
   });
+
 
   const refreshToken = randomstring.generate();
   await userModel.updateRefreshToken(user.id, refreshToken);

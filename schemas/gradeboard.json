@@ -1,0 +1,15 @@
+{
+  "required": [
+    "id_grade",
+    "id_user"
+  ],
+  "additionalProperties": true,
+  "properties": {
+    "id_grade": {
+      "type": "integer"
+    },
+    "id_user": {
+      "type": "integer"
+    }
+  }
+}

@@ -18,6 +18,7 @@ module.exports = {
 
   async findByUserName(username) {
     const users = await db('user').where('username', username);
+    console.log(users);
     if (users.length === 0) {
       return null;
     }
@@ -26,7 +27,7 @@ module.exports = {
   },
 
   async findByStudentId(studentid) {
-    const users = await db('user').where('studentid', studentid);
+    const users = await db('user').whereNot('ban',1).andWhere('studentid', studentid);
     if (users.length === 0) {
       return null;
     }
@@ -35,7 +36,7 @@ module.exports = {
   },
 
   async findByEmail(email) {
-    const users = await db('user').where('email', email);
+    const users = await db('user').whereNot('ban', 1).andWhere('email', email);
     if (users.length === 0) {
       return null;
     }
@@ -48,8 +49,12 @@ module.exports = {
     return ids[0];
   },
 
+  ban(id) {
+    return db('user').where('id', id).update('ban',1);
+  },
+
   patch(id, userWithoutId) {
-    return db('user').update(userWithoutId).where('id', id);
+    return db('user').where('id', id).update(userWithoutId);
   },
 
   del(id) {
@@ -59,11 +64,15 @@ module.exports = {
   },
 
   updateRefreshToken(id, refreshToken) {
-    return db('user').where('id', id).update('rfToken', refreshToken);
+    return db('user').whereNot('ban', 1).andWhere('id', id).update('rfToken', refreshToken);
+  },
+
+  updateStudentId(id, studentid) {
+    return db('user').whereNot('ban', 1).andWhere('id', id).update('studentid', studentid);
   },
 
   async isValidRefreshToken(id, refreshToken) {
-    const list = await db('user').where('id', id).andWhere('rfToken', refreshToken);
+    const list = await db('user').whereNot('ban', 1).andWhere('id', id).andWhere('rfToken', refreshToken);
     if (list.length > 0) {
       return true;
     }

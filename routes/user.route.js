@@ -4,6 +4,7 @@ const bcrypt = require('bcryptjs');
 const userModel = require('../models/user.model');
 const validate = require('../middlewares/validate.mdw');
 const userSchema = require('../schemas/user.json');
+const { urlencoded } = require('body-parser');
 
 const router = express.Router();
 
@@ -18,6 +19,26 @@ router.get('/:id', async function (req, res) {
   res.json(user);
 })
 
+router.post('/:id/ban', async function (req, res) {
+  const id = req.params.id || 0;
+  const user = await userModel.single(id);
+  const ret = null;
+  if(user !== null){
+    ret = await userModel.ban(id);
+  }
+  return res.json(ret);
+})
+
+// router.post('/:id', async function (req, res) {
+//   const id = req.params.id || 0;
+//   const user = await userModel.updateStudentId(id,);
+//   const ret = null;
+//   if(user !== null){
+//     ret = await userModel.ban(id);
+//   }
+//   return res.json(ret);
+// })
+
 router.post('/', validate(userSchema), async function (req, res) {
   const user = req.body;
   user.password = bcrypt.hashSync(user.password, 10);
@@ -26,8 +47,8 @@ router.post('/', validate(userSchema), async function (req, res) {
   res.status(201).json(user);
 })
 
-router.patch('/:id', async function (req, res) {
-  const id = req.params.id || 0;
+router.patch('/', async function (req, res) {
+  const id = req.body.id || 0;
   const userObj = req.body;
   const ret = await userModel.patch(id, userObj);
 
